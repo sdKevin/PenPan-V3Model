@@ -128,9 +128,8 @@ for i_GCM = 1 : length(GCM_Ensemble)
     %% (2.6) Save the result
     % Sg W/m2; Ra W/m2; Li W/m2; U10 m/s; Ta [K]; Pa[Pa]
     Met_Var.Sg = r1.rsds; Met_Var.Ra = r1.rsdt; Met_Var.Li = r1.rlds; Met_Var.U10 = r1.sfcWind; Met_Var.Ta = r1.tas; Met_Var.Sh = r1.huss; Met_Var.Pa = r1.ps;
-    save(strcat(OutputPath_MetVar , '\ScenarioMIP_' , ssp , '\Epan_' , ssp , '_' , GCM) , 'Met_Var')
+    save(strcat(OutputPath_MetVar , '\ScenarioMIP_' , ssp , '\Met_Var_' , ssp , '_' , GCM) , 'Met_Var');
     save(strcat(OutputPath_Epan , '\ScenarioMIP_' , ssp , '\Epan_' , ssp , '_' , GCM) , 'Epan');
     
     clear C r1 Met_Var Epan
-
 end

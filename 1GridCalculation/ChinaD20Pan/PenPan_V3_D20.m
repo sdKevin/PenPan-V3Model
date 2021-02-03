@@ -121,9 +121,9 @@ clear Ra
 if exist('Variables_S_pars_cal.mat','file') ==2
     load('Variables_S_pars_cal');
     % Repeat One Year Variables_S_pars_cal to given length
-    Ab_w_pie = repmat(Ab_w_pie,[1 1 size(Sg,3)]); alpha_b_w_pie = repmat(alpha_b_w_pie,[1 1 size(Sg,3)]); alpha_d_w = repmat(alpha_d_w,[1 1 size(Sg,3)]);
-    alpha_b_wall_pie = repmat(alpha_b_wall_pie,[1 1 size(Sg,3)]); tan_z_pie = repmat(tan_z_pie,[1 1 size(Sg,3)]); alpha_d_wall = repmat(alpha_d_wall,[1 1 size(Sg,3)]);
-    Ab_rim_pie_pie = repmat(Ab_rim_pie_pie,[1 1 size(Sg,3)]);
+    Ab_w_pie = repmat(Ab_w_pie,[1 1 size(Sg,3)./12]); alpha_b_w_pie = repmat(alpha_b_w_pie,[1 1 size(Sg,3)./12]); alpha_d_w = repmat(alpha_d_w,[1 1 size(Sg,3)./12]);
+    alpha_b_wall_pie = repmat(alpha_b_wall_pie,[1 1 size(Sg,3)./12]); tan_z_pie = repmat(tan_z_pie,[1 1 size(Sg,3)./12]); alpha_d_wall = repmat(alpha_d_wall,[1 1 size(Sg,3)./12]);
+    Ab_rim_pie_pie = repmat(Ab_rim_pie_pie,[1 1 size(Sg,3)./12]);
 else
     for i_mon = 1 : 12
         
@@ -166,7 +166,11 @@ else
     alpha_b_wall_pie = real(alpha_b_wall_pie); tan_z_pie = real(tan_z_pie); alpha_d_wall = real(alpha_d_wall);
     Ab_rim_pie_pie = real(Ab_rim_pie_pie);
     save('Variables_S_pars_cal' , 'Ab_w_pie' , 'alpha_b_w_pie' , 'alpha_d_w',...
-        'alpha_b_wall_pie' , 'tan_z_pie' , 'alpha_d_wall' , 'Ab_rim_pie_pie')
+        'alpha_b_wall_pie' , 'tan_z_pie' , 'alpha_d_wall' , 'Ab_rim_pie_pie');
+    % Repeat One Year Variables_S_pars_cal to given length
+    Ab_w_pie = repmat(Ab_w_pie,[1 1 size(Sg,3)./12]); alpha_b_w_pie = repmat(alpha_b_w_pie,[1 1 size(Sg,3)./12]); alpha_d_w = repmat(alpha_d_w,[1 1 size(Sg,3)./12]);
+    alpha_b_wall_pie = repmat(alpha_b_wall_pie,[1 1 size(Sg,3)./12]); tan_z_pie = repmat(tan_z_pie,[1 1 size(Sg,3)./12]); alpha_d_wall = repmat(alpha_d_wall,[1 1 size(Sg,3)./12]);
+    Ab_rim_pie_pie = repmat(Ab_rim_pie_pie,[1 1 size(Sg,3)./12]);
 end
 alpha_b_rim_pie = alpha_b_wall_pie;
 alpha_d_rim = alpha_d_wall;
