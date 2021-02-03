@@ -1,12 +1,13 @@
-function Epan = PenPan_V3_D20(pan_pars_n , pan_pars_q, pan_pars , latd , Elevation , Sg , Li , U10 , Ta , Sh , Pa ,...
-    OutputPath_InterVar , Name)
+function Epan = PenPan_V3_D20(pan_pars , latd , Elevation , Sg , Ra , Li , U10 , Ta , Sh , Pa)
 % Wang, K., Liu, X., Li, Y., Liu, C., & Yang, X. (2018). A generalized evaporation model for Chinese pans.
 % Journal of Geophysical Research: Atmospheres, 123,10943–10966. https://doi.org/10.1029/2018JD028961
-% latd °; Elevation m; Sg W/m2; Li W/m2; U10 m/s; Ta [K]; rhum %;
-%% 1 单位转变
+
+% latd °; Elevation m; Sg W/m2; Li W/m2; U10 m/s; Ta [K]; Pa[Pa]
+%% 1 Units and Variables Conversion
 latd = pi/180 .* latd; % convert degree to rad
 % from U10 to U2 (m/s)
-U2 = U10.*4.87./(log(67.8.*10-5.42));
+U2 = U10 .* 4.87 ./ (log(67.8.*10-5.42));
+clear U10;
 %% 2.1 Constants
 % Mw [kg/mol] is the molecular mass of water (=0.018 kg/mol).
 Mw = 0.018;
@@ -38,30 +39,30 @@ ka = 4.1868 ./ 1000 .* (5.96+0.017.*(Ta-273.15));
 % Dh [m^2/s] thermal diffusivity of air
 Dh = R .* Ta .* ka ./ ( Mw.*lamda.*Gama);
 % VPD [Pa]
-ea = Sh.*Pa./(0.378 .* Sh + 0.622); % Milly 2016
+ea = Sh .* Pa ./ (0.378 .* Sh + 0.622); % Milly 2016
 es = 1000 .* 0.6108 .* exp((17.27.*(Ta-273.15))./Ta);
-VPD = es - ea;
-
-%% 3 随蒸发皿变化的参数
-% L is the diameter of Class A
+VPD = es - ea; VPD(VPD<0) = 0;
+clear ea es;
+%% 3 Pan Parameters
+% L is the diameter of a pan
 D = pan_pars.D; % [m]
 L = pan_pars.L; % [m]
 he = pan_pars.he; % [m]
 % hw is the height of water level
 hw = pan_pars.hw; % [m]
-% fv需要优化的两个参数
-n = pan_pars_n;  % LWH2012中优化出来的参数 ！！！需要优化
-q = pan_pars_q; % LWH2012中优化出来的参数 ！！！需要优化
+% two parameters in fv
+n = (0.7./2) .^ ((0.37-0.0881.*log(U2))./(1-0.0881.*log(0.2)));
+q = -0.5; % laminar flow over the pan water surface
 % Beta is the ratio of heat to mass transfer coefficients of the pan
-Beta = Dh./Dv .* pan_pars.Beta; % Class A 0.97 外壁面积 0.31 断面面积 1.15 水面面积
+Beta = Dh./Dv .* pan_pars.Beta;
 % C is the correction factor to account for the shading effect of the bird guard
-C = pan_pars.C; %Class A C=1.07; D20 C=1; 601B C=1;
+C = pan_pars.C; % US Class A C=1.07; China D20 C=1; China 601B C=1;
 % e_gnd is the emissivity of ground
-e_gnd = pan_pars.e_gnd; % LWH2013 这个数可以保持不变
+e_gnd = pan_pars.e_gnd;
 % e_wall is the emissivity of water
-e_w = pan_pars.e_w; % LWH2013 这个数可以保持不变
+e_w = pan_pars.e_w;
 % e_wall is the emissivity of the pan wallWe assumed wall = 0.82 as quoted for stainless steel coated with zinc oxide (Liebert, 1965, Table I, Substrate Type: B, Coating thickness: 0.05 mm).
-e_wall =  pan_pars.e_wall; %D20可以使用类似的数据（同一个参考文献），但是601B需要重新确定数值。
+e_wall =  pan_pars.e_wall;
 % is the refractive index
 N = pan_pars.N; % Class A: 1.33
 % is the extinction coeeficient
@@ -70,15 +71,16 @@ K = pan_pars.K; % Class A: 0
 alpha_0_wall = pan_pars.alpha_0_wall; % Class A : 0.36
 % alpha_gnd
 alpha_gnd = pan_pars.alpha_gnd;
-%% 4 E_pan_A [W/m2] is the aerodynamic component of pan evaporation
+%% 4 E_pan_A [W/m2] is the aerodynamic component of pan evaporation
 % fv
 delta_z = L .* ( (rou_a.*L.*n.*U2) ./ (Yita_a) ).^q;
 fv = Mw .* Dv ./ ( R .* rou_w .* Ta .* delta_z) ;
 % E_pan_A
 E_pan_A =  Beta .* Gama .* ( fv .* VPD ) ./ ( Beta .* Gama + s ) ;
 E_pan_A(E_pan_A<0) = 0;
+clear U2 rou_a Yita_a Dv ka Dh delta_z fv Pa VPD Sh
 
-%% 5 E_pan_R [W/m2] is the radiative component of pan evaporation
+%% 5 E_pan_R [W/m2] is the radiative component of pan evaporation
 % pan water surface area
 Aw = pi .* D.^2 ./ 4;
 % Pan water surface area subject to diffuse irradiance
@@ -95,7 +97,7 @@ Ab_rim = D.*he;
 Ad_rim_pie = Ad_rim.*( D.*log(he./D) + he.*atan(D./he) + 0.5*D.*log(1+D.^2./he.^2) )./(pi.*he);
 % Pan bottom area subject to diffuse irradiance
 Ad_bot = Aw;
-%% 5.1 Net Long-wave radiation
+%% 5.1 Ln [W/m2]: the net long-wave irradiance of the pan.
 % Net long-wave irradiance of the pan water surface [W/m^2]
 Ln_w = Li./C .* Ad_w./Aw .* (  1 - (1-e_w) .* (  2./pi.*atan(D./he) - he.*log(abs( 1+(D./he).^2  ))./(D.*pi)  )     ) - ...
     e_w .* Sigma .*Ta.^4 .* (  2./pi.*atan(D./he) - he.*log(abs( 1+(D./he).^2  ))./(D.*pi)  ) - ...
@@ -110,24 +112,61 @@ Ln_rim_pie = 0.5.*Li.*Ad_rim_pie./Aw - e_wall.*Sigma.*Ta.^4.*Ad_rim_pie./Aw .* (
     e_wall.*Sigma.*Ta.^4.*Ad_rim_pie./Aw.*(1-e_w).* (-he.*atan(D./he) - 0.5.*D.*log(abs(he.^2./D.^2+1)) + 2.*he.*atan(0.5.*D./he) + 0.5.*D.*log(abs(1+4.*he.^2./D.^2))) ./(pi.*he);
 Ln_bot = e_wall .* Ad_bot ./ Aw .* ( (1-e_gnd).*Li + e_gnd.*Sigma.*Ta.^4 - Sigma.*Ta.^4 );
 Ln = Ln_w + Ln_wall + Ln_rim + Ln_rim_pie + Ln_bot;
-%% 5.2 Net Short-wave radiation
+clear Li Ta
+%% 5.2 Sn [W/m2]: the net short-wave irradiance of the pan.
 % fb beam fraction
-fb = -0.11 + 1.31.*Sg./Ra;
+fb = -0.11 + 1.31 .* Sg./Ra;
+clear Ra
 % Ab_w_pie , alpha_b_w_pie , alpha_d_w , alpha_b_wall_pie , tan_z_pie , alpha_d_wall , alpha_gnd
-%Date 是日期信息，201501如2015年1月
-oo=1;
-for ooo=1:801
-    [Ab_w_pie(oo,ooo) , alpha_b_w_pie(oo,ooo) , alpha_d_w(oo,ooo) , alpha_b_wall_pie(oo,ooo) ,...
-        tan_z_pie(oo,ooo) , alpha_d_wall(oo,ooo), Ab_rim_pie_pie(oo,ooo)] =...
-        S_pars_cal(N,K,D,alpha_0_wall,he,latd(oo,ooo),Date);
-    if isnan(alpha_b_w_pie(oo,ooo)) %东北纬度过高导致alpha_b_w_pie算出来NAN
-        alpha_b_w_pie(oo,ooo)=0.116;
+if exist('Variables_S_pars_cal.mat','file') ==2
+    load('Variables_S_pars_cal');
+    if size(Ab_w_pie,3) ~= size(Sg,3)
+        Ab_w_pie = Ab_w_pie(:,:,1:size(Sg,3)); alpha_b_w_pie = alpha_b_w_pie(:,:,1:size(Sg,3)); alpha_d_w = alpha_d_w(:,:,1:size(Sg,3));
+        alpha_b_wall_pie = alpha_b_wall_pie(:,:,1:size(Sg,3)); tan_z_pie = tan_z_pie(:,:,1:size(Sg,3)); alpha_d_wall = alpha_d_wall(:,:,1:size(Sg,3));
+        Ab_rim_pie_pie = Ab_rim_pie_pie(:,:,1:size(Sg,3));
     end
+else
+    for i_mon = 1 : 12
+        % Date represents Jan-1850 as 185001
+        Year = ceil(i_mon./12) + 1849;
+        Month = mod(i_mon,12);
+        if Month==0
+            Month = 12;
+        end
+        if Month<10
+            Date = [num2str(Year) '0' num2str(Month)];
+            Date = str2num(Date);
+        else
+            Date = [num2str(Year) num2str(Month)];
+            Date = str2num(Date);
+        end
+        
+        oo = 1;
+        for ooo = 1 : size(latd,2)
+            [Ab_w_pie(oo,ooo,i_mon) , alpha_b_w_pie(oo,ooo,i_mon) , alpha_d_w(oo,ooo,i_mon) , alpha_b_wall_pie(oo,ooo,i_mon) ,...
+                tan_z_pie(oo,ooo,i_mon) , alpha_d_wall(oo,ooo,i_mon), Ab_rim_pie_pie(oo,ooo,i_mon)] =...
+                S_pars_cal(N , K , D , alpha_0_wall , he , latd(oo,ooo) , Date);
+            if isnan(alpha_b_w_pie(oo,ooo)) %东北纬度过高导致alpha_b_w_pie算出来NAN
+                alpha_b_w_pie(oo,ooo)=0.116;
+            end
+        end
+        % For a latitude, all these variables are the same
+        if i_mon==1
+            Ab_w_pie=Ab_w_pie(ones(720,1),:,i_mon);alpha_b_w_pie=alpha_b_w_pie(ones(720,1),:,i_mon);alpha_d_w=alpha_d_w(ones(720,1),:,i_mon);
+            alpha_b_wall_pie=alpha_b_wall_pie(ones(720,1),:,i_mon);tan_z_pie=tan_z_pie(ones(720,1),:,i_mon);alpha_d_wall=alpha_d_wall(ones(720,1),:,i_mon);
+            Ab_rim_pie_pie=Ab_rim_pie_pie(ones(720,1),:,i_mon);
+        else
+            Ab_w_pie(:,:,i_mon)=Ab_w_pie(ones(720,1),:,i_mon);alpha_b_w_pie(:,:,i_mon)=alpha_b_w_pie(ones(720,1),:,i_mon);alpha_d_w(:,:,i_mon)=alpha_d_w(ones(720,1),:,i_mon);
+            alpha_b_wall_pie(:,:,i_mon)=alpha_b_wall_pie(ones(720,1),:,i_mon);tan_z_pie(:,:,i_mon)=tan_z_pie(ones(720,1),:,i_mon);alpha_d_wall(:,:,i_mon)=alpha_d_wall(ones(720,1),:,i_mon);
+            Ab_rim_pie_pie(:,:,i_mon)=Ab_rim_pie_pie(ones(720,1),:,i_mon);
+        end
+    end
+    Ab_w_pie = real(repmat(Ab_w_pie,[1 1 165])); alpha_b_w_pie = real(repmat(alpha_b_w_pie,[1 1 165])); alpha_d_w = real(repmat(alpha_d_w,[1 1 165]));
+    alpha_b_wall_pie = real(repmat(alpha_b_wall_pie,[1 1 165])); tan_z_pie = real(repmat(tan_z_pie,[1 1 165])); alpha_d_wall = real(repmat(alpha_d_wall,[1 1 165]));
+    Ab_rim_pie_pie = real(repmat(Ab_rim_pie_pie,[1 1 165]));
+    save('Variables_S_pars_cal' , 'Ab_w_pie' , 'alpha_b_w_pie' , 'alpha_d_w',...
+        'alpha_b_wall_pie' , 'tan_z_pie' , 'alpha_d_wall' , 'Ab_rim_pie_pie')
 end
-Ab_w_pie=Ab_w_pie(ones(1401,1),:);alpha_b_w_pie=alpha_b_w_pie(ones(1401,1),:);alpha_d_w=alpha_d_w(ones(1401,1),:);
-alpha_b_wall_pie=alpha_b_wall_pie(ones(1401,1),:);tan_z_pie=tan_z_pie(ones(1401,1),:);alpha_d_wall=alpha_d_wall(ones(1401,1),:);
-Ab_rim_pie_pie=Ab_rim_pie_pie(ones(1401,1),:);
-
 alpha_b_rim_pie = alpha_b_wall_pie;
 alpha_d_rim = alpha_d_wall;
 alpha_d_bot = alpha_d_wall;
@@ -142,12 +181,13 @@ Sn_rim = Sg./Aw .* (     (1-alpha_b_rim_pie).*fb.*tan_z_pie.*Ab_rim    +    Ad_r
 Sn_rim_pie = Sg./Aw .* (     fb.*tan_z_pie.*Ab_rim_pie_pie    +    Ad_rim_pie.*0.5.*(1-fb)           );
 Sn_bot = (1-alpha_d_bot).*alpha_gnd.*Sg.*Ad_bot./Aw;
 Sn = Sn_w + Sn_wall + Sn_rim + Sn_rim_pie + Sn_bot;
-%% 5.3 总净辐射
+clear fb Sg Ab_w_pie alpha_b_w_pie alpha_d_w alpha_b_wall_pie tan_z_pie alpha_d_wall Ab_rim_pie_pie alpha_b_rim_pie alpha_d_rim alpha_d_bot
+%% 5.3 Rn [W/m2]: the net irradiance of the pan.
 Rn = Sn + Ln;
 E_pan_R = s .* Rn ./ ( ( s + Beta .* Gama ) .* lamda .* rou_w );
 E_pan_R(E_pan_R<0)=0;
 E_pan = E_pan_A + E_pan_R; %m/s
-% 各个组分分开输出
+% Different Components
 E_pan_R_w = s .* (Sn_w+Ln_w) ./ ( ( s + Beta .* Gama ) .* lamda .* rou_w );
 E_pan_R_w(E_pan_R_w<0)=0;
 E_pan_R_wall = s .* (Sn_wall+Ln_wall) ./ ( ( s + Beta .* Gama ) .* lamda .* rou_w );

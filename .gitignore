@@ -32,3 +32,6 @@ octave-workspace
 
 # Big Tif Image
 *.tif
+
+# A Variable
+Variables_S_pars_cal.mat
