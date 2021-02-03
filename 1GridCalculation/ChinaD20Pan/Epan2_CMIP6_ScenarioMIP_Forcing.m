@@ -26,6 +26,7 @@ for i_GCM = 1 : length(GCM_Ensemble)
     %% (2.1.2) Interpolating Forcing Data to Uniform Resolution i.e., 0.5deg
     % Load Global 0.5 Degree Coordinate Data from Princeton-GMFD Data
     load LandInfo_05deg;
+    % Bilinear Interpolation
     R1.lat = lat_05deg; R1.lon = lon_05deg;
     for ii = 1 : size(r1.huss,3)
         R1.huss(:,:,ii) = interp2(r1.lat , r1.lon , r1.huss(:,:,ii) ,...

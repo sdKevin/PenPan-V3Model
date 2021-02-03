@@ -51,7 +51,7 @@ he = pan_pars.he; % [m]
 % hw is the height of water level
 hw = pan_pars.hw; % [m]
 % two parameters in fv
-n = (0.7./2) .^ ((0.37-0.0881.*log(U2))./(1-0.0881.*log(0.2)));
+n = (0.7./2) .^ ((0.37-0.0881.*log(U2))./(1-0.0881.*log(0.2))); % n has not adopted the extrapolation of optimized parameters as Shown in Wang et al.2018
 q = -0.5; % laminar flow over the pan water surface
 % Beta is the ratio of heat to mass transfer coefficients of the pan
 Beta = Dh./Dv .* pan_pars.Beta;
@@ -120,13 +120,13 @@ clear Ra
 % Ab_w_pie , alpha_b_w_pie , alpha_d_w , alpha_b_wall_pie , tan_z_pie , alpha_d_wall , alpha_gnd
 if exist('Variables_S_pars_cal.mat','file') ==2
     load('Variables_S_pars_cal');
-    if size(Ab_w_pie,3) ~= size(Sg,3)
-        Ab_w_pie = Ab_w_pie(:,:,1:size(Sg,3)); alpha_b_w_pie = alpha_b_w_pie(:,:,1:size(Sg,3)); alpha_d_w = alpha_d_w(:,:,1:size(Sg,3));
-        alpha_b_wall_pie = alpha_b_wall_pie(:,:,1:size(Sg,3)); tan_z_pie = tan_z_pie(:,:,1:size(Sg,3)); alpha_d_wall = alpha_d_wall(:,:,1:size(Sg,3));
-        Ab_rim_pie_pie = Ab_rim_pie_pie(:,:,1:size(Sg,3));
-    end
+    % Repeat One Year Variables_S_pars_cal to given length
+    Ab_w_pie = repmat(Ab_w_pie,[1 1 size(Sg,3)]); alpha_b_w_pie = repmat(alpha_b_w_pie,[1 1 size(Sg,3)]); alpha_d_w = repmat(alpha_d_w,[1 1 size(Sg,3)]);
+    alpha_b_wall_pie = repmat(alpha_b_wall_pie,[1 1 size(Sg,3)]); tan_z_pie = repmat(tan_z_pie,[1 1 size(Sg,3)]); alpha_d_wall = repmat(alpha_d_wall,[1 1 size(Sg,3)]);
+    Ab_rim_pie_pie = repmat(Ab_rim_pie_pie,[1 1 size(Sg,3)]);
 else
     for i_mon = 1 : 12
+        
         % Date represents Jan-1850 as 185001
         Year = ceil(i_mon./12) + 1849;
         Month = mod(i_mon,12);
@@ -140,7 +140,7 @@ else
             Date = [num2str(Year) num2str(Month)];
             Date = str2num(Date);
         end
-        
+        % Calculate Variables_S_pars_cal
         oo = 1;
         for ooo = 1 : size(latd,2)
             [Ab_w_pie(oo,ooo,i_mon) , alpha_b_w_pie(oo,ooo,i_mon) , alpha_d_w(oo,ooo,i_mon) , alpha_b_wall_pie(oo,ooo,i_mon) ,...
@@ -161,9 +161,10 @@ else
             Ab_rim_pie_pie(:,:,i_mon)=Ab_rim_pie_pie(ones(720,1),:,i_mon);
         end
     end
-    Ab_w_pie = real(repmat(Ab_w_pie,[1 1 165])); alpha_b_w_pie = real(repmat(alpha_b_w_pie,[1 1 165])); alpha_d_w = real(repmat(alpha_d_w,[1 1 165]));
-    alpha_b_wall_pie = real(repmat(alpha_b_wall_pie,[1 1 165])); tan_z_pie = real(repmat(tan_z_pie,[1 1 165])); alpha_d_wall = real(repmat(alpha_d_wall,[1 1 165]));
-    Ab_rim_pie_pie = real(repmat(Ab_rim_pie_pie,[1 1 165]));
+    % Extract the real part of a complex number
+    Ab_w_pie = real(Ab_w_pie); alpha_b_w_pie = real(alpha_b_w_pie); alpha_d_w = real(alpha_d_w);
+    alpha_b_wall_pie = real(alpha_b_wall_pie); tan_z_pie = real(tan_z_pie); alpha_d_wall = real(alpha_d_wall);
+    Ab_rim_pie_pie = real(Ab_rim_pie_pie);
     save('Variables_S_pars_cal' , 'Ab_w_pie' , 'alpha_b_w_pie' , 'alpha_d_w',...
         'alpha_b_wall_pie' , 'tan_z_pie' , 'alpha_d_wall' , 'Ab_rim_pie_pie')
 end

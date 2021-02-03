@@ -18,7 +18,9 @@ load([InputPath_Princeton , '\rlds.mat']); rlds = rlds .* landmask_05deg; rlds(:
 load([InputPath_Princeton , '\rsds.mat']); rsds = rsds .* landmask_05deg; rsds(:,:,805:828) = []; %1948-2016 to 1948-2014
 load([InputPath_Princeton , '\sfcWind.mat']); sfcWind = sfcWind .* landmask_05deg; sfcWind(:,:,805:828) = []; %1948-2016 to 1948-2014
 load([InputPath_Princeton , '\tas.mat']); tas = tas .* landmask_05deg; tas(:,:,805:828) = []; %1948-2016 to 1948-2014
-
+% Load a CMIP6 rsdt (since CMIP estimated rsdt is closed to actual value)
+load('E:\PenPanV3\VariableStorage\MonthlyVar\Var_Met\Historical\Met_Var_Historical_BCC-CSM2-MR.mat');
+rsdt = Met_Var.Ra(:,:,1177:end); clear Met_Var
 %% Calculate pan evaporation (Epan) (m/s)
 %% Pan Parameters
 % L is the diameter of Class A
