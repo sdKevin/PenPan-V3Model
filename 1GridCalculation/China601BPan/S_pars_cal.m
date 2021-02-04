@@ -31,6 +31,7 @@ for iii = 1:Num_days
     Inte1_inline = @(hourang_rad) ( ((1 - (sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd)).^2).^(1/2)./(sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd))) < (D./he)).*...
         ((43200.*(sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd)).*((D.^2.*acos((he.*(1 - (sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd)).^2).^(1./2))./(D.*(sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd)))))./2 - (he.*(D.^2 + (he.^2.*((sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd)).^2 - 1))./(sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd)).^2).^(1./2).*(1 - (sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd)).^2).^(1./2))./(2.*(sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd)))))./pi);
     Inte1_result(iii) = integral(Inte1_inline,omega_s_,omega_s)./day_rad;
+    
     % 获取被积函数的显式表达形式！
     %     cosz = sin(decl).*sin(latd) + cos(decl).*cos(latd).*cos(hourang_rad);
     %     Inte2 = cosz.*86400./(2.*pi);
@@ -190,8 +191,8 @@ for iii = 1:Num_days
     end
     Inte1_result(iii) = sum(Inte1)./day_rad;
     Inte2_result(iii) = sum(Inte2)./day_rad;
-%     Inte2_inline = @(hourang_rad) (43200.*(1 - (sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd)).^2).^(1./2))./pi;
-%     Inte2_result(iii) = integral(Inte2_inline,omega_s_,omega_s)./day_rad;
+    %     Inte2_inline = @(hourang_rad) (43200.*(1 - (sin(decl).*sin(latd) + cos(decl).*cos(hourang_rad).*cos(latd)).^2).^(1./2))./pi;
+    %     Inte2_result(iii) = integral(Inte2_inline,omega_s_,omega_s)./day_rad;
 end
 Ab_rim_pie_pie = sum(Inte1_result)./sum(Inte2_result);
 clear iii Inte1 Inte1_inline  Inte1_result Inte2 Inte2_inline Inte2_result
