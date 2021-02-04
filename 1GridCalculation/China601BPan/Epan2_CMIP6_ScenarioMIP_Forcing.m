@@ -6,7 +6,7 @@ InputPath_CMIP6_Ensemble = 'D:\CMIP6\ProcessData\Ensemble_Met';
 % Princeton-GMFD Data
 InputPath_Princeton = 'D:\CMIP6\ProcessData\Princeton\monthly';
 % Save Pan evaporation (Epan) Data
-OutputPath_Epan = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_D20Epan';
+OutputPath_Epan = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_601BEpan';
 
 %% (2) ScenarioMIP Experiment
 GCM_Ensemble = {'ACCESS-CM2','ACCESS-ESM1-5','BCC-CSM2-MR','CanESM5','CanESM5-CanOE',...

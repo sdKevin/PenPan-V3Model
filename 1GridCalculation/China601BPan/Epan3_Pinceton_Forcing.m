@@ -4,7 +4,7 @@ clc; clear all; close all;
 % Princeton Global Meteorological Forcing (Princeton-GMFD) Data
 InputPath_Princeton = 'D:\CMIP6\ProcessData\Princeton\monthly';
 % Save Pan evaporation (Epan) Data
-OutputPath_Epan = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_D20Epan';
+OutputPath_Epan = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_601BEpan';
 
 %% Princeton-GMFD Data Preparation
 % Load Global 0.5 Degree Coordinate Data from Princeton-GMFD
@@ -47,7 +47,7 @@ pan_pars.alpha_0_wall = 0.80;
 % alpha_gnd
 pan_pars.alpha_gnd = 0.2;
 
-Epan = PenPan_V3_D20(pan_pars , lat_05deg , elevation_05deg ,...
+Epan = PenPan_V3_601B(pan_pars , lat_05deg , elevation_05deg ,...
     rsds , rsdt , rlds , sfcWind , tas , huss , ps); % Epan(m/s)
 
 %% Save the result

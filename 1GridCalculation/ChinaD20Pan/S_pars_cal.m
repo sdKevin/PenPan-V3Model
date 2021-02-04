@@ -15,8 +15,8 @@ for iii = 1:Num_days
     %Roderick 1999 % decl = 0.006918-0.399912*cos(GGG)+0.0770257*sin(GGG)-0.006758*cos(2*GGG)+0.000907*sin(2*GGG)-0.002697*cos(3*GGG)+0.00148*sin(3*GGG);
     decl =  0.409 .* sin(2*pi.*days/365-1.39);
     %半天长计算
-    day_len = acos(-tan(latd).*tan(decl)).*2./(15.*pi./180);
-    day_rad = day_len.*2.*pi./24;
+    day_len = acos(-tan(latd).*tan(decl)).*2./(15.*pi./180); %the number of daylight hours (day_len,hour) for a particular day using the hour angle at sunset  
+    day_rad = day_len.*2.*pi./24; %from hour to rad
     %积分下限
     omega_s_ = -0.5.*day_rad;
     %积分上限
