@@ -161,10 +161,7 @@ else
             Ab_rim_pie_pie(:,:,i_mon)=Ab_rim_pie_pie(ones(720,1),:,i_mon);
         end
     end
-    % Extract the real part of a complex number
-    Ab_w_pie = real(Ab_w_pie); alpha_b_w_pie = real(alpha_b_w_pie); alpha_d_w = real(alpha_d_w);
-    alpha_b_wall_pie = real(alpha_b_wall_pie); tan_z_pie = real(tan_z_pie); alpha_d_wall = real(alpha_d_wall);
-    Ab_rim_pie_pie = real(Ab_rim_pie_pie);
+    
     save('Variables_S_pars_cal' , 'Ab_w_pie' , 'alpha_b_w_pie' , 'alpha_d_w',...
         'alpha_b_wall_pie' , 'tan_z_pie' , 'alpha_d_wall' , 'Ab_rim_pie_pie');
     % Repeat One Year Variables_S_pars_cal to given length

@@ -97,7 +97,7 @@ for i_Path = 1 : length(InputPath)
     Ensemble_Mean_Met.Sh = nanmean(All_Met_Var.Sh,4);
     
     save(strcat(OutputPath{i_Path} , 'Ensemble_Mean') , 'Ensemble_Mean_Met');
-    clear Met_Year All_Met_Var
+    clear Met_Year All_Met_Var Ensemble_Mean_Met GCM_Ensemble
 end
 
 %% (2) Integrate Monthly Princeton data to yearly data
@@ -134,12 +134,12 @@ end
 clear ii iii;
 % Yearly Grid to Yearly series : Met_Year
 for ii = 1:size(GridYear.Sg,3)
-    A = GridYear.Sg(:,:,ii); Met_Year.Sg(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.Ra(:,:,ii); Met_Year.Ra(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.Li(:,:,ii); Met_Year.Li(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.U10(:,:,ii); Met_Year.U10(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.Ta(:,:,ii); Met_Year.Ta(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.Sh(:,:,ii); Met_Year.Sh(i_GCM , ii) = nanmean(A(:)); clear A;
+    A = GridYear.Sg(:,:,ii); Met_Year.Sg(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.Ra(:,:,ii); Met_Year.Ra(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.Li(:,:,ii); Met_Year.Li(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.U10(:,:,ii); Met_Year.U10(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.Ta(:,:,ii); Met_Year.Ta(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.Sh(:,:,ii); Met_Year.Sh(1 , ii) = nanmean(A(:)); clear A;
 end
 clear ii Met_Var
 Met_Var = GridYear; clear GridYear;

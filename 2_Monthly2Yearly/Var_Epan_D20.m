@@ -101,7 +101,7 @@ for i_Path = 1 : length(InputPath)
     Ensemble_Mean_Epan.E_pan_R_bot = nanmean(All_Epan.E_pan_R_bot,4);
     
     save(strcat(OutputPath{i_Path} , 'Ensemble_Mean') , 'Ensemble_Mean_Epan');
-    clear Epan_Year All_Epan
+    clear Epan_Year All_Epan Ensemble_Mean_Epan GCM_Ensemble
 end
 
 %% (2) Integrate Monthly Princeton data to yearly data
@@ -136,14 +136,14 @@ end
 clear ii iii;
 % Yearly Grid to Yearly series : Epan_Year
 for ii = 1 : size(GridYear.E_pan , 3)
-    A = GridYear.E_pan(:,:,ii); Epan_Year.E_pan(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.E_pan_R(:,:,ii); Epan_Year.E_pan_R(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.E_pan_A(:,:,ii); Epan_Year.E_pan_A(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.E_pan_R_w(:,:,ii); Epan_Year.E_pan_R_w(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.E_pan_R_wall(:,:,ii); Epan_Year.E_pan_R_wall(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.E_pan_R_rim(:,:,ii); Epan_Year.E_pan_R_rim(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.E_pan_R_rim_pie(:,:,ii); Epan_Year.E_pan_R_rim_pie(i_GCM , ii) = nanmean(A(:)); clear A;
-    A = GridYear.E_pan_R_bot(:,:,ii); Epan_Year.E_pan_R_bot(i_GCM , ii) = nanmean(A(:)); clear A;
+    A = GridYear.E_pan(:,:,ii); Epan_Year.E_pan(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.E_pan_R(:,:,ii); Epan_Year.E_pan_R(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.E_pan_A(:,:,ii); Epan_Year.E_pan_A(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.E_pan_R_w(:,:,ii); Epan_Year.E_pan_R_w(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.E_pan_R_wall(:,:,ii); Epan_Year.E_pan_R_wall(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.E_pan_R_rim(:,:,ii); Epan_Year.E_pan_R_rim(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.E_pan_R_rim_pie(:,:,ii); Epan_Year.E_pan_R_rim_pie(1 , ii) = nanmean(A(:)); clear A;
+    A = GridYear.E_pan_R_bot(:,:,ii); Epan_Year.E_pan_R_bot(1 , ii) = nanmean(A(:)); clear A;
 end
 clear ii Epan
 Epan = GridYear; clear GridYear;
