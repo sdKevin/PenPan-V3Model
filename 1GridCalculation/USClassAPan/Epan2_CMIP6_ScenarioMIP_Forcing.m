@@ -5,8 +5,10 @@ clc; clear all; close all;
 InputPath_CMIP6_Ensemble = 'D:\CMIP6\ProcessData\Ensemble_Met';
 % Princeton-GMFD Data
 InputPath_Princeton = 'D:\CMIP6\ProcessData\Princeton\monthly';
+% Save Meteorological variables
+OutputPath_MetVar = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_Met';
 % Save Pan evaporation (Epan) Data
-OutputPath_Epan = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_601BEpan';
+OutputPath_Epan = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_ClassAEpan';
 
 %% (2) ScenarioMIP Experiment
 GCM_Ensemble = {'ACCESS-CM2','ACCESS-ESM1-5','BCC-CSM2-MR','CanESM5','CanESM5-CanOE',...
@@ -98,36 +100,36 @@ for i_GCM = 1 : length(GCM_Ensemble)
     %% (2.5) Calculation pan evaporation (Epan) (m/s)
     %% Pan Parameters
     % L is the diameter of Class A
-    pan_pars.D = 0.618; % [m]
-    pan_pars.L = pan_pars.D + 0.4; % [m] Diameter of outside ring, since which determines the height of boundary layer
+    pan_pars.D = 1.21; % [m]
+    pan_pars.L = pan_pars.D; % [m]
     % he is the height of rim
-    pan_pars.he = 0.075; % [m]
+    pan_pars.he = 0.055; % [m]
     % hw is the height of water level
-    pan_pars.hw = 0.612; % [m]
+    pan_pars.hw = 0.2; % [m]
     % Beta is the ratio of heat to mass transfer coefficients of the pan
-    pan_pars.Beta = 1 + 2*pi*pan_pars.D*pan_pars.he./(0.25*pi*pan_pars.D^2);
+    pan_pars.Beta = 2 +  pi*pan_pars.D*pan_pars.hw./(0.25*pi*pan_pars.D^2) +  2*pi*pan_pars.D*pan_pars.he./(0.25*pi*pan_pars.D^2); % Class A 0.97 外壁面积 0.31 断面面积 1.15 水面面积
     % C is the correction factor to account for the shading effect of the bird guard
-    pan_pars.C = 1; %Class A C=1.07; D20 C=1; 601B C=1;
+    pan_pars.C = 1.07; %Class A C=1.07; D20 C=1; 601B C=1;
     % e_gnd is the emissivity of ground
     pan_pars.e_gnd = 0.90;
     % e_wall is the emissivity of water
     pan_pars.e_w = 0.89;
     % e_wall is the emissivity of the pan wallWe assumed wall = 0.82 as quoted for stainless steel coated with zinc oxide (Liebert, 1965, Table I, Substrate Type: B, Coating thickness: 0.05 mm).
-    pan_pars.e_wall = 0.85; %Both D20 and US Class A pans are stainless steel coated with ZnO
+    pan_pars.e_wall = 0.82; %Both D20 and US Class A pans are stainless steel coated with ZnO
     % N is the refractive index
     pan_pars.N = 1.33; % Class A: 1.33
     % K is the extinction coeeficient
     pan_pars.K = 0; % Class A: 0
     % The albedo of the pan wall at a solar zenith angle of zero ((Ohman, 1999, Iron galvanised,heavily oxidized))
-    pan_pars.alpha_0_wall = 0.80;
+    pan_pars.alpha_0_wall = 0.36;
     % alpha_gnd
     pan_pars.alpha_gnd = 0.2;
     
-    Epan = PenPan_V3_601B(pan_pars , lat_05deg , elevation_05deg ,...
+    Epan = PenPan_V3_ClassA(pan_pars , lat_05deg , elevation_05deg ,...
         r1.rsds , r1.rsdt , r1.rlds , r1.sfcWind , r1.tas , r1.huss , r1.ps); % Epan(m/s)
     
     %% (2.6) Save the result
     save(strcat(OutputPath_Epan , '\ScenarioMIP_' , ssp , '\Epan_' , ssp , '_' , GCM) , 'Epan');
     
-    clear C r1 Epan
+    clear C r1 Met_Var Epan
 end
