@@ -40,7 +40,7 @@ ka = 4.1868 ./ 1000 .* (5.96+0.017.*(Ta-273.15));
 Dh = R .* Ta .* ka ./ ( Mw.*lamda.*Gama);
 % VPD [Pa]
 ea = Sh .* Pa ./ (0.378 .* Sh + 0.622); % Milly 2016
-es = 1000 .* 0.6108 .* exp((17.27.*(Ta-273.15))./Ta);
+es = 1000 .* 0.6108 .* exp((17.27.*(Ta-273.16))./(Ta-35.86)); % Murray 1967
 VPD = es - ea; VPD(VPD<0) = 0;
 clear ea es;
 %% 3 Pan Parameters
