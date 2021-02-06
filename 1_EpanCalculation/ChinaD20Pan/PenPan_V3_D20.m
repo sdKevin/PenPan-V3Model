@@ -1,7 +1,7 @@
 function Epan = PenPan_V3_D20(pan_pars , latd , Elevation , Sg , Ra , Li , U10 , Ta , Sh , Pa)
 % Wang, K., Liu, X., Li, Y., Liu, C., & Yang, X. (2018). A generalized evaporation model for Chinese pans.
 % Journal of Geophysical Research: Atmospheres, 123,10943иC10966. https://doi.org/10.1029/2018JD028961
-
+Sg(Sg<0)=0; Ra(Ra<0)=0; Li(Li<0)=0; U10(U10<0)=0; Sh(Sh<0)=0; Pa(Pa<0)=0;
 % latd бу; Elevation m; Sg W/m2; Li W/m2; U10 m/s; Ta [K]; Pa[Pa]
 %% 1 Units and Variables Conversion
 latd = pi/180 .* latd; % convert degree to rad
@@ -104,7 +104,7 @@ Ln_w = Li./C .* Ad_w./Aw .* (  1 - (1-e_w) .* (  2./pi.*atan(D./he) - he.*log(ab
     e_w .* Sigma .*Ta.^4.*(1-e_wall) .*...
     ( 1 - (  2./pi.*atan(D./he) - he.*log(abs( 1+(D./he).^2  ))./(D.*pi)  ) -...
     ( -2.*D.*atan(he./D) - he.*log(abs( 1+(D./he).^2  )) + 4.*D.*atan(0.5.*he./D) + he.*log(abs(1+4.*D.^2./he.^2)) ) ./ (D.*pi)   );
-% Net long-wave irradiance of the pan wall
+% Net long-wave irradiance of the pan wall, Ln can be smaller than 0
 Ln_wall = e_wall .* Ad_wall ./ Aw .* (  0.5*( (2-e_gnd).*Li + e_gnd.*Sigma.*Ta.^4 )  - Sigma.*Ta.^4    ) ;
 Ln_rim = e_wall .* Ad_rim ./ Aw .* (  0.5*( (2-e_gnd).*Li + e_gnd.*Sigma.*Ta.^4 )  - Sigma.*Ta.^4    ) ;
 Ln_rim_pie = 0.5.*Li.*Ad_rim_pie./Aw - e_wall.*Sigma.*Ta.^4.*Ad_rim_pie./Aw .* ( atan(D./he)./pi + 0.5.*D./(he.*pi).*log(abs(1+he.^2./D.^2))   ) - ...
@@ -171,10 +171,15 @@ alpha_d_rim = alpha_d_wall;
 alpha_d_bot = alpha_d_wall;
 % Net short-wave irradiance of the pan water surface, Sn_w [W/m^2]
 Sn_w = Sg./(C.*Aw) .* (  fb.*Ab_w_pie.*(1-alpha_b_w_pie) + (1-fb).*Ad_w.*(1-alpha_d_w) );
+Sn_w(Sn_w<0)=0;
 Sn_wall = Sg./Aw .* (     (1-alpha_b_wall_pie).*fb.*tan_z_pie.*Ab_wall    +    Ad_wall.*0.5.*(1-alpha_d_wall).*(alpha_gnd+(1-fb))           );
+Sn_wall(Sn_wall<0)=0;
 Sn_rim = Sg./Aw .* (     (1-alpha_b_rim_pie).*fb.*tan_z_pie.*Ab_rim    +    Ad_rim.*0.5.*(1-alpha_d_rim).*(alpha_gnd+(1-fb))           );
+Sn_rim(Sn_rim<0)=0;
 Sn_rim_pie = Sg./Aw .* (     fb.*tan_z_pie.*Ab_rim_pie_pie    +    Ad_rim_pie.*0.5.*(1-fb)           );
+Sn_rim_pie(Sn_rim_pie<0)=0;
 Sn_bot = (1-alpha_d_bot).*alpha_gnd.*Sg.*Ad_bot./Aw;
+Sn_bot(Sn_bot<0)=0;
 Sn = Sn_w + Sn_wall + Sn_rim + Sn_rim_pie + Sn_bot;
 clear fb Sg Ab_w_pie alpha_b_w_pie alpha_d_w alpha_b_wall_pie tan_z_pie alpha_d_wall Ab_rim_pie_pie alpha_b_rim_pie alpha_d_rim alpha_d_bot
 %% 5.3 Rn [W/m2]: the net irradiance of the pan.
