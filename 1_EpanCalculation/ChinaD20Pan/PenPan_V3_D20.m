@@ -40,7 +40,7 @@ ka = 4.1868 ./ 1000 .* (5.96+0.017.*(Ta-273.15));
 Dh = R .* Ta .* ka ./ ( Mw.*lamda.*Gama);
 % VPD [Pa]
 ea = Sh .* Pa ./ (0.378 .* Sh + 0.622); % Milly 2016
-es = 1000 .* 0.6108 .* exp((17.27.*(Ta-273.16))./(Ta-35.86)); % Murray 1967
+es = 1000 .* 0.61078 .* exp((17.27.*(Ta-273.16))./(Ta-35.86)); % Murray 1967
 VPD = es - ea; VPD(VPD<0) = 0;
 clear ea es;
 %% 3 Pan Parameters
@@ -52,7 +52,7 @@ he = pan_pars.he; % [m]
 hw = pan_pars.hw; % [m]
 % two parameters in fv
 n = (0.7./2) .^ ((0.37-0.0881.*log(U2))./(1-0.0881.*log(0.2))); % n has not adopted the extrapolation of optimized parameters as Shown in Wang et al.2018
-q = -0.5; % laminar flow over the pan water surface
+q = -0.44; % laminar flow over the pan water surface, Epan_A is sensitive to this parameter
 % Beta is the ratio of heat to mass transfer coefficients of the pan
 Beta = Dh./Dv .* pan_pars.Beta;
 % C is the correction factor to account for the shading effect of the bird guard
