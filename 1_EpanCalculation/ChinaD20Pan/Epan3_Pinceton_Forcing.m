@@ -31,7 +31,7 @@ pan_pars.he = 0.08; % [m]
 % hw is the height of water level
 pan_pars.hw = 0.02; % [m]
 % Beta is the ratio of heat to mass transfer coefficients of the pan
-pan_pars.Beta = 2 +  pi*pan_pars.D*0.1./(0.25*pi*pan_pars.D^2) +  pi*pan_pars.D*0.08./(0.25*pi*pan_pars.D^2); % Class A 0.97 外壁面积 0.31 断面面积 1.15 水面面积
+pan_pars.Beta = 2 +  pi*pan_pars.D*0.1./(0.25*pi*pan_pars.D^2) +  pi*pan_pars.D*0.08./(0.25*pi*pan_pars.D^2);
 % C is the correction factor to account for the shading effect of the bird guard
 pan_pars.C = 1; %Class A C=1.07; D20 C=1; 601B C=1;
 % e_gnd is the emissivity of ground

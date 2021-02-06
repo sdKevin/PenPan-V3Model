@@ -1,25 +1,25 @@
 function [Ab_w_pie , alpha_b_w_pie , alpha_d_w , alpha_b_wall_pie , tan_z_pie , alpha_d_wall , Ab_rim_pie_pie] =...
-    S_pars_cal(N,K,D,alpha_0_wall,he,latd,Date)
-% using quad function causes a problem with the value at the discontinuous point
+    S_pars_cal(N , K , D , alpha_0_wall , he , latd , Date)
+% Note: Why we did not using Numerical integration? For using quad function will cause a problem with the value at the discontinuous point.
 %% 1 Ab_w_pie
 Num_days = Num_Days_Mon(Date);
-for iii = 1:Num_days
+for iii = 1 : Num_days
     Date_str = num2str(Date);
     Year_num = str2num(Date_str(:,1:4));
     Mon_num = str2num(Date_str(:,5:6));
-    days = datenum(Year_num,Mon_num,iii)-datenum(Year_num,1,1)+1;
+    days = datenum(Year_num,Mon_num,iii) - datenum(Year_num,1,1) + 1;
     %Roderick 1999 % GGG = (days-1)*2*pi/365;
     %Roderick 1999 % decl = 0.006918-0.399912*cos(GGG)+0.0770257*sin(GGG)-0.006758*cos(2*GGG)+0.000907*sin(2*GGG)-0.002697*cos(3*GGG)+0.00148*sin(3*GGG);
-    decl =  0.409 .* sin(2*pi.*days/365-1.39); %solar declination
+    decl =  0.409 .* sin(2*pi.*days/365-1.39); % Solar declination
     % daylight length
-    XX = -tan(latd).*tan(decl); XX(XX>1) = 0.99;XX(XX<-1) = -0.99;
-    day_len = acos(XX).*2./(15.*pi./180); %the number of daylight hours (day_len,hour) for a particular day using the hour angle at sunset
-    day_rad = day_len.*2.*pi./24; %from hour to rad
+    XX = -tan(latd).*tan(decl); XX(XX>1) = 0.99; XX(XX<-1) = -0.99;
+    day_len = acos(XX).*2./(15.*pi./180); % The number of daylight hours (day_len,hour) for a particular day using the hour angle at sunset
+    day_rad = day_len.*2.*pi./24; % Changing Unit from hour to rad
     % -ws
     omega_s_ = -0.5.*day_rad;
     % ws
     omega_s = 0.5.*day_rad;
-    for iiii = 1:1000
+    for iiii = 1 : 1000
         iiii_w = omega_s_ + day_rad*iiii./1000;
         cosz = sin(decl).*sin(latd) + cos(decl).*cos(latd).*cos(iiii_w);
         z = acos(cosz);
@@ -47,20 +47,21 @@ clearvars -except Ab_w_pie N K D alpha_0_wall he latd Date Num_days
 
 %% 2 alpha_b_w_pie
 alpha_0 = ( (N-1).^2 + K.^2 ) ./ ( (N+1).^2 + K.^2 )  ;
-for iii = 1:Num_days
+for iii = 1 : Num_days
+    Date_str = num2str(Date);
     Year_num = str2num(Date_str(:,1:4));
     Mon_num = str2num(Date_str(:,5:6));
-    days = datenum(Year_num,Mon_num,iii)-datenum(Year_num,1,1)+1;
+    days = datenum(Year_num,Mon_num,iii) - datenum(Year_num,1,1) + 1;
     decl =  0.409 .* sin(2*pi.*days/365-1.39);
     % daylight length
-    XX = -tan(latd).*tan(decl); XX(XX>1) = 0.99;XX(XX<-1) = -0.99;
+    XX = -tan(latd).*tan(decl); XX(XX>1) = 0.99; XX(XX<-1) = -0.99;
     day_len = acos(XX).*2./(15.*pi./180);
     day_rad = day_len.*2.*pi./24;
     % -ws
     omega_s_ = -0.5.*day_rad;
     % ws
     omega_s = 0.5.*day_rad;
-    for iiii = 1:1000
+    for iiii = 1 : 1000
         iiii_w = omega_s_ + day_rad*iiii./1000;
         cosz = sin(decl).*sin(latd) + cos(decl).*cos(latd).*cos(iiii_w);
         z = acos(cosz);
@@ -85,6 +86,7 @@ for iii = 1:Num_days
     Inte2_result(iii) = sum(Inte2)./day_rad;
 end
 alpha_b_w_pie = sum(Inte1_result)./sum(Inte2_result);
+alpha_b_w_pie(isnan(alpha_b_w_pie)) = 0.12;
 clearvars -except Ab_w_pie alpha_b_w_pie N K D alpha_0_wall he latd Date Num_days
 
 %% 3 alpha_d_w
@@ -140,7 +142,7 @@ for iii = 1:Num_days
     days = datenum(Year_num,Mon_num,iii)-datenum(Year_num,1,1)+1;
     decl =  0.409 .* sin(2*pi.*days/365-1.39);
     % daylight length
-    XX = -tan(latd).*tan(decl); XX(XX>1) = 0.99;XX(XX<-1) = -0.99;
+    XX = -tan(latd).*tan(decl); XX(XX>1) = 0.99; XX(XX<-1) = -0.99;
     day_len = acos(XX).*2./(15.*pi./180);
     day_rad = day_len.*2.*pi./24;
     % -ws
@@ -174,14 +176,14 @@ for iii = 1:Num_days
     
     decl =  0.409 .* sin(2*pi.*days/365-1.39);
     % daylight length
-    XX = -tan(latd).*tan(decl); XX(XX>1) = 0.99;XX(XX<-1) = -0.99;
+    XX = -tan(latd).*tan(decl); XX(XX>1) = 0.99; XX(XX<-1) = -0.99;
     day_len = acos(XX).*2./(15.*pi./180);
     day_rad = day_len.*2.*pi./24;
     % -ws
     omega_s_ = -0.5.*day_rad;
     % ws
     omega_s = 0.5.*day_rad;
-    for iiii = 1:1000
+    for iiii = 1 : 1000
         iiii_w = omega_s_ + day_rad*iiii./1000;
         cosz = sin(decl).*sin(latd) + cos(decl).*cos(latd).*cos(iiii_w);
         z = acos(cosz);
