@@ -51,7 +51,7 @@ he = pan_pars.he; % [m]
 % hw is the height of water level
 hw = pan_pars.hw; % [m]
 % two parameters in fv
-n = (0.7./2) .^ ((0.37-0.0881.*log(U2))./(1-0.0881.*log(0.2))); % n has not adopted the extrapolation of optimized parameters as Shown in Wang et al.2018
+n = (0.225./2) .^ ((0.37-0.0881.*log(U2))./(1-0.0881.*log(0.2))); % n has not adopted the extrapolation of optimized parameters as Shown in Wang et al.2018
 q = -0.47; % laminar flow over the pan water surface, Epan_A is sensitive to this parameter
 % Beta is the ratio of heat to mass transfer coefficients of the pan
 Beta = Dh./Dv .* pan_pars.Beta;

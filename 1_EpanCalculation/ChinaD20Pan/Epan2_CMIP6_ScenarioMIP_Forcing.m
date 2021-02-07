@@ -107,7 +107,7 @@ for i_GCM = 1 : length(GCM_Ensemble)
     % hw is the height of water level
     pan_pars.hw = 0.02; % [m]
     % Beta is the ratio of heat to mass transfer coefficients of the pan
-    pan_pars.Beta = 2 +  pi*pan_pars.D*0.1./(0.25*pi*pan_pars.D^2) +  pi*pan_pars.D*0.08./(0.25*pi*pan_pars.D^2);
+    pan_pars.Beta = 2 +  pi*pan_pars.D*(pan_pars.he+pan_pars.hw)./(0.25*pi*pan_pars.D^2) +  pi*pan_pars.D*pan_pars.he./(0.25*pi*pan_pars.D^2);
     % C is the correction factor to account for the shading effect of the bird guard
     pan_pars.C = 1; %Class A C=1.07; D20 C=1; 601B C=1;
     % e_gnd is the emissivity of ground
@@ -130,7 +130,7 @@ for i_GCM = 1 : length(GCM_Ensemble)
     
     %% (2.6) Save the result
     % Sg W/m2; Ra W/m2; Li W/m2; U10 m/s; Ta [K]; Pa[Pa]
-    Met_Var.Sg = r1.rsds; Met_Var.Ra = r1.rsdt; Met_Var.Li = r1.rlds; Met_Var.U10 = r1.sfcWind; Met_Var.Ta = r1.tas; Met_Var.Sh = r1.huss; Met_Var.Pa = r1.ps;
+    Met_Var.Sg = r1.rsds; Met_Var.Ra = r1.rsdt; Met_Var.Li = r1.rlds; Met_Var.U10 = r1.sfcWind; Met_Var.Ta = r1.tas; Met_Var.Sh = r1.huss;
     save(strcat(OutputPath_MetVar , '\ScenarioMIP_' , ssp , '\Met_Var_' , ssp , '_' , GCM) , 'Met_Var');
     save(strcat(OutputPath_Epan , '\ScenarioMIP_' , ssp , '\Epan_' , ssp , '_' , GCM) , 'Epan');
     

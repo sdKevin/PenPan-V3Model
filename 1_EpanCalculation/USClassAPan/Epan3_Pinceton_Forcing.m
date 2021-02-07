@@ -3,8 +3,6 @@ clc; clear all; close all;
 %% Setting the input/output paths
 % Princeton Global Meteorological Forcing (Princeton-GMFD) Data
 InputPath_Princeton = 'D:\CMIP6\ProcessData\Princeton\monthly';
-% Save Meteorological variables
-OutputPath_MetVar = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_Met';
 % Save Pan evaporation (Epan) Data
 OutputPath_Epan = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_ClassAEpan';
 

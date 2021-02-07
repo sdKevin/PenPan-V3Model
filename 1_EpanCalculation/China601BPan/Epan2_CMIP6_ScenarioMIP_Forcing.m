@@ -113,7 +113,7 @@ for i_GCM = 1 : length(GCM_Ensemble)
     % e_wall is the emissivity of water
     pan_pars.e_w = 0.89;
     % e_wall is the emissivity of the pan wallWe assumed wall = 0.82 as quoted for stainless steel coated with zinc oxide (Liebert, 1965, Table I, Substrate Type: B, Coating thickness: 0.05 mm).
-    pan_pars.e_wall = 0.85; %Both D20 and US Class A pans are stainless steel coated with ZnO
+    pan_pars.e_wall = 0.85;
     % N is the refractive index
     pan_pars.N = 1.33; % Class A: 1.33
     % K is the extinction coeeficient

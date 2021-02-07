@@ -31,7 +31,7 @@ pan_pars.he = 0.08; % [m]
 % hw is the height of water level
 pan_pars.hw = 0.02; % [m]
 % Beta is the ratio of heat to mass transfer coefficients of the pan
-pan_pars.Beta = 2 +  pi*pan_pars.D*0.1./(0.25*pi*pan_pars.D^2) +  pi*pan_pars.D*0.08./(0.25*pi*pan_pars.D^2);
+pan_pars.Beta = 2 +  pi*pan_pars.D*(pan_pars.he+pan_pars.hw)./(0.25*pi*pan_pars.D^2) +  pi*pan_pars.D*pan_pars.he./(0.25*pi*pan_pars.D^2);
 % C is the correction factor to account for the shading effect of the bird guard
 pan_pars.C = 1; %Class A C=1.07; D20 C=1; 601B C=1;
 % e_gnd is the emissivity of ground
@@ -54,7 +54,7 @@ Epan = PenPan_V3_D20(pan_pars , lat_05deg , elevation_05deg ,...
 
 %% Save the result
 % Sg W/m2; Ra W/m2; Li W/m2; U10 m/s; Ta [K]; Pa[Pa]
-Met_Var.Sg = rsds; Met_Var.Ra = rsdt; Met_Var.Li = rlds; Met_Var.U10 = sfcWind; Met_Var.Ta = tas; Met_Var.Sh = huss; Met_Var.Pa = ps;
+Met_Var.Sg = rsds; Met_Var.Ra = rsdt; Met_Var.Li = rlds; Met_Var.U10 = sfcWind; Met_Var.Ta = tas; Met_Var.Sh = huss;
 save(strcat(OutputPath_MetVar , '\Princeton\Met_Var_Princeton') , 'Met_Var')
 save(strcat(OutputPath_Epan , '\Princeton\Epan_Princeton') , 'Epan');
 

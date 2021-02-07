@@ -5,8 +5,6 @@ clc; clear all; close all;
 InputPath_CMIP6_Ensemble = 'D:\CMIP6\ProcessData\Ensemble_Met';
 % Princeton-GMFD Data
 InputPath_Princeton = 'D:\CMIP6\ProcessData\Princeton\monthly';
-% Save Meteorological variables
-OutputPath_MetVar = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_Met';
 % Save Pan evaporation (Epan) Data
 OutputPath_Epan = 'E:\PenPanV3\VariableStorage\MonthlyVar\Var_ClassAEpan';
 
@@ -131,5 +129,5 @@ for i_GCM = 1 : length(GCM_Ensemble)
     %% (2.6) Save the result
     save(strcat(OutputPath_Epan , '\ScenarioMIP_' , ssp , '\Epan_' , ssp , '_' , GCM) , 'Epan');
     
-    clear C r1 Met_Var Epan
+    clear C r1 Epan
 end
