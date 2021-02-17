@@ -45,19 +45,19 @@ for i_Path = 1 : length(InputPath)
             % Sg
             A = Met_Var.Sg(:,:,ii:ii+11);
             GridYear.Sg(:,:,iii) = nanmean(A,3);
-            % Ta
+            % Ra
             B = Met_Var.Ra(:,:,ii:ii+11);
             GridYear.Ra(:,:,iii) = nanmean(B,3);
-            % VPD
+            % Li
             C = Met_Var.Li(:,:,ii:ii+11);
             GridYear.Li(:,:,iii) = nanmean(C,3);
-            % CO2
+            % U10
             D = Met_Var.U10(:,:,ii:ii+11);
             GridYear.U10(:,:,iii) = nanmean(D,3);
-            % U2
+            % Ta
             E = Met_Var.Ta(:,:,ii:ii+11);
             GridYear.Ta(:,:,iii) = nanmean(E,3);
-            % pr
+            % Sh
             F = Met_Var.Sh(:,:,ii:ii+11);
             GridYear.Sh(:,:,iii) = nanmean(F,3);
             clear A B C D E F
@@ -113,19 +113,19 @@ for ii = 1 : 12 : size(Met_Var.Sg , 3)
     % Sg
     A = Met_Var.Sg(:,:,ii:ii+11);
     GridYear.Sg(:,:,iii) = nanmean(A,3);
-    % Ta
+    % Ra
     B = Met_Var.Ra(:,:,ii:ii+11);
     GridYear.Ra(:,:,iii) = nanmean(B,3);
-    % VPD
+    % Li
     C = Met_Var.Li(:,:,ii:ii+11);
     GridYear.Li(:,:,iii) = nanmean(C,3);
-    % CO2
+    % U10
     D = Met_Var.U10(:,:,ii:ii+11);
     GridYear.U10(:,:,iii) = nanmean(D,3);
-    % U2
+    % Ta
     E = Met_Var.Ta(:,:,ii:ii+11);
     GridYear.Ta(:,:,iii) = nanmean(E,3);
-    % pr
+    % Sh
     F = Met_Var.Sh(:,:,ii:ii+11);
     GridYear.Sh(:,:,iii) = nanmean(F,3);
     clear A B C D E F
