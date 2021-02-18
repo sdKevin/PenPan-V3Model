@@ -1,5 +1,6 @@
 %% Figure 3
-% Princeton 1948-2014, CMIP6 Historical 1850-2014, CMIP6 Scenarios 2015-2100
+% Fig3a: Princeton 1948-2014, CMIP6 Historical 1850-2014, CMIP6 Scenarios 2015-2100
+% Fig3b: Princeton 1948-1992,1993-2014, CMIP6 Historical 1948-1992,1993-2014
 %% Spatial change of 601B linear trend
 clc; clear all; close all;
 Path_Ensemble_Mean_Historical_GCM = 'E:\PenPanV3\VariableStorage\YearlyVar\Var_601BEpan\Historical\Epan_Historical_Ensemble_Mean.mat';
@@ -19,6 +20,7 @@ clear Path_Ensemble_Mean_Historical_GCM Path_Ensemble_Mean_ScenarioMIP_ssp126_GC
 clear Path_Ensemble_Mean_ScenarioMIP_ssp370_GCM Path_Ensemble_Mean_ScenarioMIP_ssp585_GCM Path_Ensemble_Mean_Princeton_GCM
 % Epan Input (m/s) Output mm/(year2)
 Fig3a_Plotting(GridEpan_CMIP , Path_Fig3_Output)
+Fig3b_Plotting(GridEpan_CMIP , Path_Fig3_Output)
 
 %% Spatial change of D20 linear trend
 clc; clear all; close all;
@@ -39,6 +41,7 @@ clear Path_Ensemble_Mean_Historical_GCM Path_Ensemble_Mean_ScenarioMIP_ssp126_GC
 clear Path_Ensemble_Mean_ScenarioMIP_ssp370_GCM Path_Ensemble_Mean_ScenarioMIP_ssp585_GCM Path_Ensemble_Mean_Princeton_GCM
 % Epan Input (m/s) Output mm/(year2)
 Fig3a_Plotting(GridEpan_CMIP , Path_Fig3_Output)
+Fig3b_Plotting(GridEpan_CMIP , Path_Fig3_Output)
 
 %% Spatial change of ClassA linear trend
 clc; clear all; close all;
@@ -59,6 +62,7 @@ clear Path_Ensemble_Mean_Historical_GCM Path_Ensemble_Mean_ScenarioMIP_ssp126_GC
 clear Path_Ensemble_Mean_ScenarioMIP_ssp370_GCM Path_Ensemble_Mean_ScenarioMIP_ssp585_GCM Path_Ensemble_Mean_Princeton_GCM
 % Epan Input (m/s) Output mm/(year2)
 Fig3a_Plotting(GridEpan_CMIP , Path_Fig3_Output)
+Fig3b_Plotting(GridEpan_CMIP , Path_Fig3_Output)
 
 %% Spatial change of GGI3000 linear trend
 clc; clear all; close all;
@@ -79,3 +83,4 @@ clear Path_Ensemble_Mean_Historical_GCM Path_Ensemble_Mean_ScenarioMIP_ssp126_GC
 clear Path_Ensemble_Mean_ScenarioMIP_ssp370_GCM Path_Ensemble_Mean_ScenarioMIP_ssp585_GCM Path_Ensemble_Mean_Princeton_GCM
 % Epan Input (m/s) Output mm/(year2)
 Fig3a_Plotting(GridEpan_CMIP , Path_Fig3_Output)
+Fig3b_Plotting(GridEpan_CMIP , Path_Fig3_Output)

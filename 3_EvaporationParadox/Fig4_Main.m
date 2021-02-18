@@ -1,6 +1,7 @@
 %% Figure 4
 %% Spatial change of Met Variables linear trend
-% Princeton 1948-2014, CMIP6 Historical 1850-2014, CMIP6 Scenarios 2015-2100
+% Fig4a: Princeton 1948-2014, CMIP6 Historical 1850-2014, CMIP6 Scenarios 2015-2100
+% Fig4b: Princeton 1948-1992,1993-2014, CMIP6 Historical 1948-1992,1993-2014
 clc; clear all; close all;
 Path_Ensemble_Mean_Historical_GCM = 'E:\PenPanV3\VariableStorage\YearlyVar\Var_Met\Historical\Met_Var_Historical_Ensemble_Mean.mat';
 Path_Ensemble_Mean_ScenarioMIP_ssp126_GCM = 'E:\PenPanV3\VariableStorage\YearlyVar\Var_Met\ScenarioMIP_ssp126\Met_Var_ssp126_Ensemble_Mean.mat';
@@ -19,4 +20,4 @@ clear Path_Ensemble_Mean_Historical_GCM Path_Ensemble_Mean_ScenarioMIP_ssp126_GC
 clear Path_Ensemble_Mean_ScenarioMIP_ssp370_GCM Path_Ensemble_Mean_ScenarioMIP_ssp585_GCM Path_Ensemble_Mean_Princeton_GCM
 % Input Sg(W/m2),Li(W/m2),U10(m/s),Ta(K),Sh(-) Output Unit/(year)
 Fig4a_Plotting(GridMet_CMIP , Path_Fig4_Output)
-
+Fig4b_Plotting(GridMet_CMIP , Path_Fig4_Output)
