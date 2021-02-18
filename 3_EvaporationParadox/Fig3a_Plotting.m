@@ -43,7 +43,7 @@ end
 clear ii A B
 clear ii A B
 
-%% (2) linear regression of AI calculated by [Princeton 1948-2014]
+%% (2) linear regression of Epan calculated by [Princeton 1948-2014]
 % E_pan m/s to (mm/year)
 E_pan_Princeton =  GridEpan_CMIP(1).Ensemble_Mean_Epan.E_pan .* 365.*24.*3600.*1000;
 for i_lon = 1 : size(E_pan_Princeton,1)
@@ -64,13 +64,22 @@ for i_lon = 1 : size(E_pan_Princeton,1)
     end
 end
 clear i_lat i_lon
+
+% interpolate the seam
+k_E_pan_Princeton_Year = interp2(lat_05deg([1:358,362:end],:),...
+    lon_05deg([1:358,362:end],:),k_E_pan_Princeton_Year([1:358,362:end],:),...
+    lat_05deg,lon_05deg).*landmask_05deg;
+p_E_pan_Princeton_Year = interp2(lat_05deg([1:358,362:end],:),...
+    lon_05deg([1:358,362:end],:),p_E_pan_Princeton_Year([1:358,362:end],:),...
+    lat_05deg,lon_05deg).*landmask_05deg;
+
 k_E_pan_Princeton_Year(isnan(k_E_pan_Princeton_Year)) = -9999;
 SaveData2GeoTIFF([Path_Fig3_Output 'k_E_pan_Princeton'],extent,k_E_pan_Princeton_Year');
 p_E_pan_Princeton_Year(isnan(p_E_pan_Princeton_Year)) = -9999;
 SaveData2GeoTIFF([Path_Fig3_Output 'p_E_pan_Princeton'],extent,p_E_pan_Princeton_Year');
 clear k_E_pan_Princeton_Year p_E_pan_Princeton_Year E_pan_Princeton
 
-%% (3) linear regression of AI calculated by CMIP scenarios
+%% (3) linear regression of Epan calculated by CMIP scenarios
 ssp = {'ssp126','ssp245','ssp370','ssp585'};
 for i_ssp = 1 : length(ssp)
     % E_pan m/s to (mm/year)
@@ -109,7 +118,7 @@ for i_ssp = 1 : length(ssp)
     clear k_E_pan_CMIP_Year p_E_pan_CMIP_Year E_pan_CMIP
 end
 
-%% (4) linear regression of AI calculated by CMIP historical experiments
+%% (4) linear regression of Epan calculated by CMIP historical experiments
 % E_pan m/s to (mm/year)
 E_pan_CMIP =  GridEpan_CMIP(6).Ensemble_Mean_Epan.E_pan .* 365.*24.*3600.*1000;
 for i_lon = 1 : size(E_pan_CMIP,1)

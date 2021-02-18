@@ -1,4 +1,5 @@
 %% Figure 3
+% Princeton 1948-2014, CMIP6 Historical 1850-2014, CMIP6 Scenarios 2015-2100
 %% Spatial change of 601B linear trend
 clc; clear all; close all;
 Path_Ensemble_Mean_Historical_GCM = 'E:\PenPanV3\VariableStorage\YearlyVar\Var_601BEpan\Historical\Epan_Historical_Ensemble_Mean.mat';
