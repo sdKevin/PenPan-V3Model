@@ -36,7 +36,7 @@ ylabel('Epan Anomaly (mm year^-^1)');
 %% Plotting Epan Under ssp370
 subplot(1,6,[4:6])
 for i_ssp = 4
-    % pr kg/(m2s) to mm/year
+     % E_pan m/s to mm/year
     Epan_Historical = Epan_Year(1).Epan_Year.E_pan .* 365.*24.*3600.*1000;
     Epan_Historical(16,:) = []; % HadGEM3-GC31-LL
     Epan_ssp370 = Epan_Year(i_ssp).Epan_Year.E_pan .* 365.*24.*3600.*1000;
